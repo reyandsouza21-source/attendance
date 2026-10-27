@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BMW-Inspired Student Dashboard</title>
+<style>
+:root{--bg:#070a10;--card:#101722;--ink:#eef4ff;--muted:#8c9bb2;--line:#253247;--blue:#1688ff;--blue2:#0c2038;--green:#50d6a0;--amber:#ffc857;--red:#ff7777}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 78% -12%,#102d51 0%,transparent 38%),radial-gradient(ellipse at 0% 30%,#101a2b 0%,transparent 38%),var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background:repeating-linear-gradient(135deg,transparent 0 70px,#1d2b40 71px,#1d2b40 72px,transparent 73px 140px);mask-image:linear-gradient(to bottom,black,transparent 80%)}
+.wrap{position:relative;max-width:1220px;margin:0 auto;padding:30px 20px 54px}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.roundel{width:43px;height:43px;border:2px solid #e9f1ff;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:900;letter-spacing:-.05em;color:#fff;background:conic-gradient(#1688ff 0 25%,#eaf3ff 25% 50%,#1688ff 50% 75%,#eaf3ff 75%);box-shadow:0 0 24px #1688ff24}
+.brandname{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#a8b7cc;font-weight:800}
+.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:850}
+h1{margin:4px 0 6px;font-size:clamp(28px,4vw,42px);letter-spacing:-.045em;line-height:1.1}
+.sub{color:var(--muted);margin:0}
+a.btn,button{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(110deg,#1688ff,#0755c8);color:#fff;text-decoration:none;border:1px solid #3c9dff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px #006dff26;transition:transform .18s,filter .18s}
+a.btn:hover,button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:24px 0}
+.card{position:relative;overflow:hidden;background:linear-gradient(145deg,#141e2d,#0d131d);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 14px 34px #0005}
+.card:after{content:"";position:absolute;right:-25px;top:-42px;width:120px;height:120px;border:1px solid #2c87ff25;border-radius:50%;box-shadow:0 0 0 14px #2c87ff08,0 0 0 30px #2c87ff05}
+.kicker{font-size:12px;color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.1em}
+.metric{font-size:32px;font-weight:850;letter-spacing:-.045em;margin-top:7px;font-variant-numeric:tabular-nums}
+.note{background:linear-gradient(100deg,#0c2038,#0b1524);border:1px solid #244b76;padding:15px 17px;border-radius:10px;margin:18px 0;color:#c6d9f4}
+.note strong{color:#fff}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:29px 0 13px}
+h2{font-size:20px;margin:0;letter-spacing:-.025em}
+.search{width:min(100%,320px);border:1px solid #304057;border-radius:8px;padding:11px 13px;font:inherit;background:#0d141f;color:var(--ink);outline:none}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1688ff20}
+.search::placeholder{color:#728198}
+.tablewrap{overflow:auto;background:#0c121c;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 36px #0004}
+table{border-collapse:collapse;width:100%;min-width:850px}
+th,td{text-align:left;padding:14px 15px;border-bottom:1px solid #202c3e;vertical-align:top}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#a5b5cb;background:#121c2a;white-space:nowrap}
+tbody tr{transition:background .15s}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#111e2e}
+.subject{font-weight:750;max-width:290px;color:#f1f6ff}.code{font-size:11px;color:#8292aa;margin-top:4px;letter-spacing:.03em}
+.pill{display:inline-block;border-radius:5px;padding:4px 9px;font-weight:850;font-size:13px;background:#10382e;color:var(--green);border:1px solid #1d624e;font-variant-numeric:tabular-nums}
+.pill.warn{background:#382b12;color:var(--amber);border-color:#68501c}.pill.low{background:#3a191d;color:var(--red);border-color:#6b2c34}
+.bar{height:5px;background:#263246;border-radius:8px;overflow:hidden;margin-top:8px;min-width:90px}.fill{height:100%;border-radius:8px;background:linear-gradient(90deg,#0875ed,#4bb7ff);box-shadow:0 0 10px #1688ff66}
+.small{font-size:12px;color:var(--muted)}
+.footer{font-size:12px;color:#77869c;margin-top:20px;border-top:1px solid #202b3b;padding-top:14px}
+@media(max-width:650px){.cards{grid-template-columns:1fr}.wrap{padding:22px 12px 36px}.metric{font-size:28px}header{align-items:flex-start}}
+
+.editnum{width:78px;max-width:100%;background:#0a1422;color:#f1f6ff;border:1px solid #354b67;border-radius:7px;padding:8px;font:inherit;font-variant-numeric:tabular-nums}
+.editnum:focus{outline:2px solid #1688ff;outline-offset:1px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.secondarybtn{background:#142235;border:1px solid #3a5577;box-shadow:none}
+.status{color:#50d6a0;font-size:13px;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><div class="brand"><div class="roundel">M</div><div class="brandname">M Performance · Student tools</div></div><div class="eyebrow">Precision at a glance</div><h1>Attendance dashboard</h1><p class="sub">Your private, locally saved attendance tracker. BMW-inspired dark edition.</p></div>
+  <a class="btn" href="https://btechconnect.staloysius.edu.in/attendance" target="_blank" rel="noopener noreferrer">Open official student portal ↗</a>
+</header>
+
+<div class="welcome-reyan" style="margin:0 0 22px;padding:18px 20px;border:1px solid #244b76;border-radius:12px;background:linear-gradient(105deg,#0c2038,#101722);color:#eef4ff;box-shadow:0 12px 28px #0003">
+  <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#1688ff;font-weight:850">M Performance · Student Portal</div>
+  <div style="font-size:clamp(22px,3vw,30px);font-weight:850;letter-spacing:-.035em;margin-top:5px">Welcome, Reyan Dsouza</div>
+  <div style="font-size:13px;color:#91a2b9;margin-top:4px">Your attendance overview is ready.</div>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="kicker">Subjects shown</div><div class="metric" id="subjectCount">8</div><div class="small">From your supplied dashboard</div></div>
+  <div class="card"><div class="kicker">Overall attendance</div><div class="metric" id="overall">—</div><div class="small">Total attended ÷ total conducted</div></div>
+  <div class="card"><div class="kicker">75% threshold</div><div class="metric">75%</div><div class="small">Calculated separately for each subject</div></div>
+</div>
+<div class="note"><strong>Important:</strong> This dashboard never requests your portal password. Open the official portal, check the latest counts, and enter them below. Updates are saved only in this browser on this device. It does not automatically sync with the college.</div>
+<div class="sectionhead"><div><h2>Your subjects</h2><div class="small">“Classes you can miss” means additional consecutive absences before that subject drops below 75%, assuming no more classes are attended.</div></div><input class="search" id="search" placeholder="Search subjects or codes…" aria-label="Search subjects"></div>
+<div class="actions"><button type="button" id="reset" class="secondarybtn">Restore screenshot values</button><button type="button" id="export" class="secondarybtn">Export backup JSON</button><button type="button" id="import" class="secondarybtn">Import backup JSON</button><input id="importFile" type="file" accept="application/json,.json" hidden></div><p class="status" id="status" role="status">Edit the conducted and attended counts below. Changes save automatically.</p><div class="tablewrap">
+<table>
+<thead><tr><th>Subject</th><th>Conducted (edit)</th><th>Attended (edit)</th><th>Current %</th><th>Can miss and stay ≥75%</th><th>After that many misses</th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+</div>
+<p class="footer">Initially based on the numbers visible in the screenshot. Your edits are saved locally. Your college may apply exemptions or attendance rules differently, so verify the official percentage before deciding to miss a class.</p>
+</div>
+<script>
+const initialSubjects = [
+ {code:"256PUBC200",name:"Differential Equations and Linear Algebra",conducted:32,attended:28},
+ {code:"256PUEC207",name:"Operating System and Computer Organization",conducted:36,attended:30},
+ {code:"256PUEC208",name:"Computer Vision",conducted:12,attended:11},
+ {code:"256PUHM214",name:"Business Etiquettes",conducted:10,attended:8},
+ {code:"256PUIC219",name:"Data Structures and Application Strategies",conducted:36,attended:31},
+ {code:"256PUIC220",name:"Object-Oriented Programming with Java",conducted:34,attended:30},
+ {code:"256PUPC223",name:"Augmented Reality and Virtual Reality",conducted:27,attended:22},
+ {code:"256PUPL235",name:"Project Management with GIT",conducted:5,attended:4}
+];
+const storageKey='bmw-attendance-v2';
+let subjects=initialSubjects.map(s=>({...s}));
+try { const saved=JSON.parse(localStorage.getItem(storageKey)); if(Array.isArray(saved)) subjects=initialSubjects.map((s,i)=>{const v=saved.find(x=>x.name===s.name);return v&&Number.isInteger(v.conducted)&&Number.isInteger(v.attended)&&v.conducted>=0&&v.attended>=0&&v.attended<=v.conducted?{...s,conducted:v.conducted,attended:v.attended}:s}); } catch(e){}
+const pct=(s)=>s.conducted?100*s.attended/s.conducted:0;
+const missable=(s)=>s.conducted?Math.max(0,Math.floor((s.attended-0.75*s.conducted)/0.75+1e-9)):0;
+function render(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const filtered=subjects.filter(s=>(s.name+' '+s.code).toLowerCase().includes(q));
+ document.getElementById('rows').innerHTML=filtered.map(s=>{
+   const p=pct(s), n=missable(s), after=s.conducted+n?100*s.attended/(s.conducted+n):0;
+   const cls=p<78?'low':p<83?'warn':'';
+   return `<tr><td><div class="subject">${s.name}</div><div class="code">${s.code}</div></td><td><input class="editnum" type="number" min="0" step="1" value="${s.conducted}" data-name="${s.name}" data-field="conducted" aria-label="Conducted classes for ${s.name}"></td><td><input class="editnum" type="number" min="0" step="1" value="${s.attended}" data-name="${s.name}" data-field="attended" aria-label="Attended classes for ${s.name}"></td><td><span class="pill ${cls}">${p.toFixed(2)}%</span><div class="bar"><div class="fill" style="width:${Math.min(100,p)}%"></div></div></td><td><strong>${n}</strong> ${n===1?'class':'classes'}</td><td>${after.toFixed(2)}%</td></tr>`;
+ }).join('');
+}
+const totalC=subjects.reduce((a,s)=>a+s.conducted,0), totalA=subjects.reduce((a,s)=>a+s.attended,0);
+document.getElementById('overall').textContent=(100*totalA/totalC).toFixed(2)+'%';
+function updateOverall(){const c=subjects.reduce((a,s)=>a+s.conducted,0),a=subjects.reduce((a,s)=>a+s.attended,0);document.getElementById('overall').textContent=c?(100*a/c).toFixed(2)+'%':'—';}
+const status=document.getElementById('status');
+document.getElementById('rows').addEventListener('change',e=>{
+ const el=e.target;if(!el.matches('input[data-field]'))return;
+ const s=subjects.find(x=>x.name===el.dataset.name),v=Number(el.value);
+ if(!s||!Number.isInteger(v)||v<0||(el.dataset.field==='attended'&&v>s.conducted)||(el.dataset.field==='conducted'&&v<s.attended)){status.textContent='Invalid entry: attended must be between 0 and conducted, and counts must be whole numbers.';render();return;}
+ s[el.dataset.field]=v;try{localStorage.setItem(storageKey,JSON.stringify(subjects));status.textContent='Saved locally in this browser.'}catch(e){status.textContent='Unable to save automatically; export a backup instead.'}render();updateOverall();
+});
+document.getElementById('reset').addEventListener('click',()=>{if(!confirm('Restore all counts to the original screenshot values?'))return;subjects=initialSubjects.map(s=>({...s}));localStorage.removeItem(storageKey);render();updateOverall();status.textContent='Restored screenshot values.'});
+document.getElementById('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(subjects,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='attendance-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
+document.getElementById('import').addEventListener('click',()=>document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const arr=JSON.parse(await f.text());if(!Array.isArray(arr)||arr.length!==initialSubjects.length)throw Error();const next=initialSubjects.map(s=>{const v=arr.find(x=>x.name===s.name);if(!v||!Number.isInteger(v.conducted)||!Number.isInteger(v.attended)||v.conducted<0||v.attended<0||v.attended>v.conducted)throw Error();return {...s,conducted:v.conducted,attended:v.attended}});subjects=next;localStorage.setItem(storageKey,JSON.stringify(subjects));render();updateOverall();status.textContent='Backup imported and saved.'}catch(e){status.textContent='Invalid backup file.'}e.target.value=''});
+document.getElementById('search').addEventListener('input',render);
+render();updateOverall();
+</script>
+
+<style>
+#bmwLoginOverlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 0%,#12365d 0%,#080d16 52%,#05070b 100%);color:#eef4ff;font-family:"Segoe UI",system-ui,sans-serif}
+#bmwLoginOverlay *{box-sizing:border-box}
+.bmw-login-card{width:min(100%,430px);border:1px solid #263a54;border-radius:18px;background:linear-gradient(145deg,#121d2c,#080d15);padding:30px;box-shadow:0 25px 80px #000a,0 0 45px #087cff15}
+.bmw-brand{display:flex;align-items:center;gap:12px;margin-bottom:25px}
+.bmw-roundel{width:48px;height:48px;border-radius:50%;border:2px solid #dceaff;background:conic-gradient(#1688ff 0 25%,#eaf3ff 25% 50%,#1688ff 50% 75%,#eaf3ff 75%);display:grid;place-items:center;color:#08111e;font-size:11px;font-weight:950}
+.bmw-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#9fb2cb;font-weight:800}
+.bmw-login-card h1{font-size:29px;letter-spacing:-.04em;margin:0 0 5px;color:#f4f8ff}
+.bmw-login-card .lead{margin:0 0 24px;color:#91a2b9;font-size:13px}
+.bmw-field{display:block;margin:16px 0}
+.bmw-field span{display:block;color:#c7d5e8;font-size:12px;font-weight:750;margin-bottom:7px}
+.bmw-field input{width:100%;border:1px solid #2c405a;border-radius:9px;background:#080e18;color:#f4f8ff;padding:13px 14px;font:inherit;outline:none}
+.bmw-field input:focus{border-color:#1688ff;box-shadow:0 0 0 3px #1688ff20}
+.bmw-submit{width:100%;border:1px solid #48a2ff;border-radius:9px;padding:13px 16px;margin-top:8px;background:linear-gradient(110deg,#1688ff,#0755c8);color:white;font-weight:850;font-size:14px;cursor:pointer}
+.bmw-submit:hover{filter:brightness(1.1)}
+.bmw-error{display:none;color:#ff9b9b;background:#381a20;border:1px solid #6c2b35;border-radius:8px;padding:10px 12px;font-size:12px;margin-top:13px}
+.bmw-foot{font-size:11px;color:#7f90a8;margin-top:19px;line-height:1.55}
+.bmw-official{display:block;text-align:center;color:#8fc5ff;text-decoration:none;font-size:12px;margin-top:15px}
+</style>
+<div id="bmwLoginOverlay" role="dialog" aria-modal="true" aria-labelledby="bmwLoginTitle">
+  <form class="bmw-login-card" id="bmwLoginForm">
+    <div class="bmw-brand"><div class="bmw-roundel">M</div><div><div class="bmw-label">M Performance</div><div class="bmw-label" style="color:#1688ff;margin-top:4px">Student tools</div></div></div>
+    <h1 id="bmwLoginTitle">Student Login</h1>
+    <p class="lead">Sign in to open your personal attendance dashboard.</p>
+    <label class="bmw-field"><span>Register Number</span><input id="bmwRegister" name="register" autocomplete="username" placeholder="Enter register number" required></label>
+    <label class="bmw-field"><span>Password</span><input id="bmwPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required></label>
+    <button class="bmw-submit" type="submit">LOGIN TO DASHBOARD ↗</button>
+    <div id="bmwLoginError" class="bmw-error" role="alert"></div>
+    <p class="bmw-foot">Demo login only. This screen does not authenticate with your college account. It does not send credentials anywhere.</p>
+    <a class="bmw-official" href="https://btechconnect.staloysius.edu.in/attendance" target="_blank" rel="noopener noreferrer">Open official St Aloysius portal ↗</a>
+  </form>
+</div>
+<script>
+(function(){
+  function initBmwLogin(){
+    const overlay=document.getElementById('bmwLoginOverlay');
+    const form=document.getElementById('bmwLoginForm');
+    const error=document.getElementById('bmwLoginError');
+    if(!overlay||!form||!error)return;
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      const reg=document.getElementById('bmwRegister').value.trim();
+      const pass=document.getElementById('bmwPassword').value;
+      if(!reg||!pass){error.textContent='Enter both fields to continue.';error.style.display='block';return;}
+      // Local demo gate: intentionally does not check or store credentials.
+      overlay.remove();
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initBmwLogin);
+  else initBmwLogin();
+})();
+</script>
+
+</body>
+</html>
